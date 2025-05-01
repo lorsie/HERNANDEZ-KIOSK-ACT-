@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Croissant Noir</title>
+  <link rel="icon" type="image/png" href="images/icon.png" />
+  <style>
+    body {
+      background: #fef1e7;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .receipt-container {
+      background: white;
+      width: 380px;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .logo {
+      width: 100px;
+      margin-bottom: 10px;
+    }
+
+    .brand {
+      font-size: 24px;
+      font-weight: bold;
+      color: #d2691e;
+      margin-bottom: 20px;
+    }
+
+    .receipt-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #6d4c41;
+    }
+
+    .date {
+      font-size: 14px;
+      color: #8d6e63;
+      margin-bottom: 15px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 8px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      text-align: left;
+      font-weight: bold;
+      color: #5d4037;
+    }
+
+    .summary {
+      text-align: right;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+
+    .summary strong {
+      display: inline-block;
+      width: 80px;
+    }
+
+    .thank-you {
+      font-weight: bold;
+      color: #8d4b2c;
+      margin-top: 20px;
+    }
+
+    .footer-img {
+      width: 60px;
+      margin-top: 10px;
+    }
+
+    .back-btn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: #6d4c41;
+      color: white;
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-btn">Back to Home</a>
+
+  <div class="receipt-container">
+    <img src="images/logo.png" alt="Logo" class="logo">
+    <div class="brand">Croissant Noir</div>
+    <div class="receipt-title">Receipt</div>
+    <div class="date" id="date-time"></div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Qty</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody id="receipt-items"></tbody>
+    </table>
+
+    <div class="summary">
+      <div><strong>Total:</strong> ₱<span id="total"></span></div>
+      <div><strong>Cash:</strong> ₱<span id="cash"></span></div>
+      <div><strong>Change:</strong> ₱<span id="change"></span></div>
+    </div>
+
+    <div class="thank-you">Thank you for ordering!</div>
+    <img src="images/logo.png" alt="Footer" class="footer-img">
+  </div>
+
+  <script>
+    const menu = {
+      'Ham & Cheese Croissant': 90,
+      'Tuna Croissant': 95,
+      'Cheesy Bacon Croissant': 100,
+      'Plain Croissant': 50,
+      'Iced Americano': 80,
+      'Cappuccino': 85,
+      'Hot Chocolate': 70,
+      'French Macaron': 45,
+      'Nutella Bomb': 90
+    };
+  
+    const params = new URLSearchParams(window.location.search);
+    const dataParam = params.get('data');
+    let parsed = {};
+  
+    try {
+      parsed = JSON.parse(decodeURIComponent(dataParam));
+    } catch (e) {
+      console.error('Invalid data param:', e);
+    }
+  
+    const items = parsed.items || [];
+    const total = parsed.total || 0;
+    const cash = parsed.payment?.amount || 0;
+    const change = parsed.payment?.change || 0;
+  
+    document.getElementById('date-time').textContent = new Date().toLocaleString();
+  
+    const itemsContainer = document.getElementById('receipt-items');
+    items.forEach(item => {
+      const name = item.name || 'Unknown Item';
+      const qty = item.qty || 1;
+      const price = menu[name] || item.price || 0;
+      const subtotal = price * qty;
+  
+      itemsContainer.innerHTML += `
+        <tr>
+          <td>${name}</td>
+          <td>${qty}</td>
+          <td>₱${subtotal.toFixed(2)}</td>
+        </tr>
+      `;
+    });
+  
+    document.getElementById('total').textContent = total.toFixed(2);
+    document.getElementById('cash').textContent = cash.toFixed(2);
+    document.getElementById('change').textContent = change.toFixed(2);
+  </script>  
+</body>
+</html>
