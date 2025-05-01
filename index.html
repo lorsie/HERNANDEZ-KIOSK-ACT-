@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Croissant Noir</title>
+  <link rel="icon" type="image/png" href="images/icon.png" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    body {
+      margin: 0;
+      display: flex;
+      background-color: #fef1e7;
+      color: #4e342e;
+    }
+
+    .sidebar {
+      width: 220px;
+      background: #fef1e7;
+      padding: 30px 20px;
+      border-right: 1px solid #e0dcd8;
+      height: 100vh;
+      position: sticky;
+      top: 0;
+    }
+
+    .sidebar h2 {
+      font-size: 22px;
+      margin-bottom: 30px;
+      text-align: center;
+      color: #3e2723;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar li {
+      padding: 10px 0;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .sidebar li:hover {
+      color: #8d6e63;
+      font-weight: bold;
+    }
+
+    .main {
+      flex-grow: 1;
+      padding: 40px 30px;
+      overflow-y: auto;
+    }
+
+    .main h1 {
+      font-size: 28px;
+      margin-bottom: 5px;
+      color: #3e2723;
+    }
+
+    .main p {
+      color: #7b5b51;
+      margin-bottom: 30px;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+    }
+
+    .item-card {
+      background: white;
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+      transition: 0.2s;
+    }
+
+    .item-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .item-card img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .item-card h4 {
+      margin: 12px 0 5px;
+      font-size: 16px;
+    }
+
+    .item-card p {
+      margin: 0 0 10px;
+      color: #6d4c41;
+    }
+
+    .btn {
+      background: #6d4c41;
+      color: white;
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: 0.2s;
+    }
+
+    .btn:hover {
+      background: #5d4037;
+    }
+
+    .cart {
+      width: 270px;
+      background: #fffaf6;
+      padding: 25px 20px;
+      border-left: 1px solid #e0dcd8;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
+
+    .cart h3 {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    .cart-item {
+      padding: 6px 0;
+      font-size: 14px;
+      border-bottom: 1px dashed #ccc;
+    }
+
+    .total {
+      margin-top: 15px;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .dropdown {
+      margin-top: 20px;
+    }
+
+    select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      background-color: #fff;
+    }
+
+    #pay-btn {
+      margin-top: 20px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div style="text-align: center; margin-bottom: 30px;">
+      <img src="images/icon.png" alt="Croissant Noir" style="width: 60px; border-radius: 50%; margin-bottom: 8px;">
+      <h2 style="margin: 0; font-size: 22px;">Croissant Noir</h2>
+    </div>
+    <ul>
+      <li class="sidebar-item">All</li>
+      <li class="sidebar-item">Trendy</li>
+      <li class="sidebar-item">Crossaints</li>
+      <li class="sidebar-item">Cookies</li>
+      <li class="sidebar-item">Sandwich</li>
+      <li class="sidebar-item">Pasta</li>
+      <li class="sidebar-item">Non-Coffee</li>
+      <li class="sidebar-item">Coffee</li>
+    </ul>
+  </div>
+
+  <div class="main">
+    <h1>Welcome to Croissant Noir</h1>
+    <p>Select your favorites and place your order below.</p>
+
+    <div class="menu-grid" id="menu-items">
+      <div class="item-card" data-name="Le Crookie" data-price="130" data-category="Trendy">
+        <img src="images/crookie.jpg" alt="Le Crookie">
+        <h4>Le Crookie</h4>
+        <p>₱130</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item-card" data-name="Brookie" data-price="110" data-category="Trendy">
+        <img src="images/brookie.jpg" alt="Brookie">
+        <h4>Brookie</h4>
+        <p>₱110</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+
+      <div class="item-card" data-name="Churro Cheesecake" data-price="100" data-category="Trendy">
+        <img src="images/churro.jpg" alt="Churro Cheesecake">
+        <h4>Churro Cheesecake</h4>
+        <p>₱100</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item-card" data-name="Nutella Bomb" data-price="90" data-category="Trendy">
+        <img src="images/bomb.jpg" alt="Nutella Bomb">
+        <h4>Nutella Bomb</h4>
+        <p>₱90</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item-card" data-name="Stuffed Cookie" data-price="100" data-category="Trendy">
+        <img src="images/stuffed.jpg" alt="Stuffed Cookie">
+        <h4>Stuffed Cookie</h4>
+        <p>₱100</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item-card" data-name="Basque Burnt Cheesecake" data-price="120" data-category="Trendy">
+        <img src="images/basque.jpg" alt="Basque Burnt Cheesecake">
+        <h4>Basque Burnt Cheesecake</h4>
+        <p>₱120</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+
+      <div class="item-card" data-name="Ham & Cheese Crossaint" data-price="120" data-category="Crossaints">
+        <img src="images/ham.jpg" alt="Ham & Cheese Crossaints">
+        <h4>Ham & Cheese Crossaints</h4>
+        <p>₱120</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item-card" data-name="Almond Croissant" data-price="100" data-category="Crossaints">
+        <img src="images/almond.jpg" alt="Almond Crossaints">
+        <h4>Almond Crossaints</h4>
+        <p>₱100</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item-card" data-name="Biscoff Crossaints" data-price="130" data-category="Crossaints">
+        <img src="images/biscoff.jpg" alt="Biscoff Crossaints">
+        <h4>Biscoff Crossaints</h4>
+        <p>₱130</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item-card" data-name="Oreo Crossaints" data-price="110" data-category="Crossaints">
+        <img src="images/oreo.jpg" alt="Oreo Crossaints">
+        <h4>Oreo Crossaints</h4>
+        <p>₱110</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item-card" data-name="Strawberry Crossaints" data-price="110" data-category="Crossaints">
+        <img src="images/berry.png" alt="Strawberry Crossaints">
+        <h4>Strawberry Crossaints</h4>
+        <p>₱110</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item-card" data-name="Dubai Chocolate Crossaints" data-price="150" data-category="Crossaints">
+        <img src="images/dubaicroi.jpg" alt="Dubai Chocolate Crossaints">
+        <h4>Dubai Chocolate Crossaints</h4>
+        <p>₱150</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+
+      <div class="item-card" data-name="Chocolate Chip Cookies" data-price="90" data-category="Cookies">
+        <img src="images/choc.jpg" alt="Chocolate Chip Cookies">
+        <h4>Chocolate Chip Cookies</h4>
+        <p>₱90</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item-card" data-name="Red Velvet Cookies" data-price="100" data-category="Cookies">
+        <img src="images/red.jpg" alt="Red Velvet Cookies">
+        <h4>Red Velvet Cookies</h4>
+        <p>₱100</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item-card" data-name="White Macademia Cookies" data-price="100" data-category="Cookies">
+        <img src="images/white.jpg" alt="White Macademia Cookies">
+        <h4>White Macademia Cookies</h4>
+        <p>₱100</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item-card" data-name="Sugar Cookies" data-price="80" data-category="Cookies">
+        <img src="images/sugar.jpg" alt="Sugar Cookies">
+        <h4>Sugar Cookies</h4>
+        <p>₱80</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+
+      <div class="item-card" data-name="Grilled Cheese" data-price="80" data-category="Sandwich">
+        <img src="images/cheese.jpg" alt="Grilled Cheese">
+        <h4>Grilled Cheese</h4>
+        <p>₱80</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item-card" data-name="Ham & Cheese Sandwich" data-price="90" data-category="Sandwich">
+        <img src="images/ham&.jpeg" alt="Ham & Cheese Sandwich">
+        <h4>Ham & Cheese Sandwich</h4>
+        <p>₱90</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item-card" data-name="Egg Sandwich" data-price="90" data-category="Sandwich">
+        <img src="images/egg.jpg" alt="Egg Sandwich">
+        <h4>Egg Sandwich</h4>
+        <p>₱90</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item-card" data-name="Nutella Sandwich" data-price="100" data-category="Sandwich">
+        <img src="images/nutella.jpg" alt="Nutella Sandwich">
+        <h4>Nutella Sandwich</h4>
+        <p>₱100</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item-card" data-name="Grilled Chicken Sandwich" data-price="130" data-category="Sandwich">
+        <img src="images/chicken.jpg" alt="Grilled Chicken Sandwich">
+        <h4>Grilled Chicken Sandwich</h4>
+        <p>₱130</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item-card" data-name="Roasted Beef Sandwich" data-price="150" data-category="Sandwich">
+        <img src="images/beef.jpg" alt="Roasted Beef Sandwich">
+        <h4>Roasted Beef Sandwich</h4>
+        <p>₱150</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+
+      <div class="item-card" data-name="Carbonara" data-price="100" data-category="Pasta">
+        <img src="images/carbonara.jpg" alt="Carbonara">
+        <h4>Carbonara</h4>
+        <p>₱100</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item-card" data-name="Chicken Alfredo" data-price="110" data-category="Pasta">
+        <img src="images/alfredo.jpg" alt="Chicken Alfredo">
+        <h4>Chicken Alfredo</h4>
+        <p>₱110</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item-card" data-name="Creamy Chicken Gnocchi" data-price="120" data-category="Pasta">
+        <img src="images/gnocchi.jpg" alt="Creamy Chicken Gnocchi">
+        <h4>Creamy Chicken Gnocchi</h4>
+        <p>₱120</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item-card" data-name="Shrimp Fettuccine" data-price="130" data-category="Pasta">
+        <img src="images/fettu.jpg" alt="Shrimp Fettuccine">
+        <h4>Shrimp Fettuccine</h4>
+        <p>₱130</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item-card" data-name="Pesto Pasta Shrimp" data-price="130" data-category="Pasta">
+        <img src="images/pesto.jpg" alt="Pesto Pasta Shrimp">
+        <h4>Pesto Pasta Shrimp</h4>
+        <p>₱130</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item-card" data-name="Aglio E Olio" data-price="140" data-category="Pasta">
+        <img src="images/aglio.jpg" alt="Aglio E Olio">
+        <h4>Aglio E Olio</h4>
+        <p>₱140</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+
+      <div class="item-card" data-name="Hot Chocolate" data-price="60" data-category="Non-Coffee">
+        <img src="images/hot.jpg" alt="Hot Chocolate">
+        <h4>Hot Chocolate</h4>
+        <p>₱60</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item-card" data-name="Iced Chocolate" data-price="70" data-category="Non-Coffee">
+        <img src="images/iced.jpg" alt="Iced Chocolate">
+        <h4>Iced Chocolate</h4>
+        <p>₱70</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item-card" data-name="Fruit Tea" data-price="80" data-category="Non-Coffee">
+        <img src="images/fruit.jpg" alt="Fruit Tea">
+        <h4>Fruit Tea</h4>
+        <p>₱80</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item-card" data-name="Lemonade" data-price="70" data-category="Non-Coffee">
+        <img src="images/lemon.jpg" alt="Lemonade">
+        <h4>Lemonade</h4>
+        <p>₱70</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item-card" data-name="Iced Tea" data-price="70" data-category="Non-Coffee">
+        <img src="images/icedt.jpg" alt="Iced Tea">
+        <h4>Iced Tea</h4>
+        <p>₱70</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item-card" data-name="Mai Tai" data-price="90" data-category="Non-Coffee">
+        <img src="images/mai.jpg" alt="Mai Tai">
+        <h4>Mai Tai</h4>
+        <p>₱90</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+
+      <div class="item-card" data-name="Espresso" data-price="50" data-category="Coffee">
+        <img src="images/espresso.png" alt="Espresso">
+        <h4>Espresso</h4>
+        <p>₱50</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item-card" data-name="Iced Latte" data-price="60" data-category="Coffee">
+        <img src="images/latte.jpg" alt="Iced Latte">
+        <h4>Iced Latte</h4>
+        <p>₱60</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item-card" data-name="Cappuccino" data-price="80" data-category="Coffee">
+        <img src="images/cappu.jpg" alt="Cappuccino">
+        <h4>Cappuccino</h4>
+        <p>₱80</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item-card" data-name="Caramel Machiatto" data-price="100" data-category="Coffee">
+        <img src="images/caramel.jpg" alt="Caramel Machiatto">
+        <h4>Caramel Machiatto</h4>
+        <p>₱100</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item-card" data-name="Mocha Latte" data-price="90" data-category="Coffee">
+        <img src="images/mocha.jpg" alt="Mocha Latte">
+        <h4>Mocha Latte</h4>
+        <p>₱90</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item-card" data-name="Cold Brew" data-price="50" data-category="Coffee">
+        <img src="images/cold.jpg" alt="Cold Brew">
+        <h4>Cold Brew</h4>
+        <p>₱50</p>
+        <button class="btn add-to-cart">Add to Cart</button>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="cart">
+    <h3>Your Cart</h3>
+    <div id="cart-items"></div>
+    <div class="total">Total: ₱<span id="total">0</span></div>
+
+    <div class="dropdown">
+      <label>Payment Method:</label>
+      <select id="payment-method">
+        <option value="Cash">Cash</option>
+        <option value="Card">Card</option>
+      </select>
+    </div>
+
+    <div class="dropdown">
+      <label>Service Option:</label>
+      <select id="service-option">
+        <option value="Dine-In">Dine-In</option>
+        <option value="Take-Out">Take-Out</option>
+      </select>
+    </div>
+
+    <button class="btn" id="pay-btn">Pay</button>
+  </div>
+
+  <script>
+    let cart = [];
+
+    function updateCart() {
+      $('#cart-items').empty();
+      let total = 0;
+      cart.forEach(item => {
+        $('#cart-items').append(`<div class="cart-item">${item.name} - ₱${item.price}</div>`);
+        total += item.price;
+      });
+      $('#total').text(total);
+    }
+
+    $(document).on('click', '.add-to-cart', function () {
+      const card = $(this).closest('.item-card');
+      const name = card.data('name');
+      const price = parseFloat(card.data('price'));
+      cart.push({ name, price });
+      updateCart();
+    });
+
+    $('#pay-btn').on('click', function () {
+      if (cart.length === 0) {
+        alert('Your cart is empty!');
+        return;
+      }
+
+      const payment = $('#payment-method').val();
+      const service = $('#service-option').val();
+      const total = cart.reduce((sum, item) => sum + item.price, 0);
+      const receiptData = { items: cart, total, payment, service };
+      const encoded = encodeURIComponent(JSON.stringify(receiptData));
+      window.open(`receipt.html?data=${encoded}`, '_blank');
+      cart = [];
+      updateCart();
+    });
+
+    $('.sidebar-item').on('click', function () {
+      const category = $(this).text().trim();
+      $('.item-card').each(function () {
+        const itemCategory = $(this).data('category');
+        if (category === 'All' || category === itemCategory) {
+          $(this).show();
+        } else {
+          $(this).hide();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
